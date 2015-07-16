@@ -2,7 +2,7 @@
     "name": "tmsolution/logging-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 bundle for logging",
-    "keywords": ["base", "bundle"],
+    "keywords": ["logging", "bundle"],
     "homepage": "https://github.com/TMSolution/LoggingBundle",
     "license": "MIT",
     "authors": [
