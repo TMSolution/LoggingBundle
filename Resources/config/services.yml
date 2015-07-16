@@ -1,0 +1,69 @@
+parameters:
+#    tm_solution_logging.example.class: TMSolution\LoggingBundle\Example
+    tmsolution.logging.level: 100
+    tmsolution.logging.logger.app: "app"   
+    tmsolution.logging.logger.edi: "edi"
+    tmsolution.logging.logger.entity: "entity"
+
+services:
+    
+    TMSolution.Logging.Processor.UserProcessor:
+        class: TMSolution\LoggingBundle\Processor\UserProcessor
+        arguments: ["@security.context"]
+
+    TMSolution.Logging.Processor.ExtendedMessageProcessor:
+        class: TMSolution\LoggingBundle\Processor\ExtendedMessageProcessor
+
+    TMSolution.Logging.Processor.EntityProcessor:
+        class: TMSolution\LoggingBundle\Processor\EntityProcessor
+
+    TMSolution.Logging.Formatter.LineFormatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments: ["%%message%%"]
+
+    TMSolution.Logging.Handler.DatabaseHandler:
+        class: TMSolution\LoggingBundle\Handler\DatabaseHandler
+        arguments: ["@service_container", %tmsolution.logging.level%]
+        calls:
+            - [setFormatter, ["@TMSolution.Logging.Formatter.LineFormatter"]]
+            
+    TMSolution.Logging.Handler.EntityDatabaseHandler:
+        class: TMSolution\LoggingBundle\Handler\EntityDatabaseHandler
+        arguments: ["@service_container", %tmsolution.logging.level%]
+        calls:
+            - [setFormatter, ["@TMSolution.Logging.Formatter.LineFormatter"]]
+
+
+    TMSolution.Logging.Logger:
+        class: Monolog\Logger
+        arguments: [%tmsolution.logging.logger.app%]
+        calls:
+            - [pushHandler, ["@TMSolution.Logging.Handler.DatabaseHandler"]]
+            - [pushProcessor, ["@TMSolution.Logging.Processor.UserProcessor"]]
+            - [pushProcessor, ["@TMSolution.Logging.Processor.ExtendedMessageProcessor"]]
+
+    TMSolution.Logging.EdiLogger:
+        class: Monolog\Logger
+        arguments: [%tmsolution.logging.logger.edi%]
+        calls:
+        - [pushHandler, ["@TMSolution.Logging.Handler.DatabaseHandler"]]
+        - [pushProcessor, ["@TMSolution.Logging.Processor.UserProcessor"]]
+        - [pushProcessor, ["@TMSolution.Logging.Processor.ExtendedMessageProcessor"]]
+
+    TMSolution.Logging.EntityLogger:
+        class: TMSolution\LoggingBundle\Logger\EntityLogger
+        arguments: [%tmsolution.logging.logger.entity%]
+        calls:
+            - [pushHandler, ["@TMSolution.Logging.Handler.EntityDatabaseHandler"]]
+            - [pushProcessor, ["@TMSolution.Logging.Processor.UserProcessor"]]
+            - [pushProcessor, ["@TMSolution.Logging.Processor.ExtendedMessageProcessor"]]
+            - [pushProcessor, ["@TMSolution.Logging.Processor.EntityProcessor"]]
+            
+
+    TMSolution.Logging.LogManager:
+        class: TMSolution\LoggingBundle\LogManager
+        calls:
+            - [addLogger, ["@TMSolution.Logging.Logger"]]
+            - [addLogger, ["@TMSolution.Logging.EdiLogger"]]
+            - [addLogger, ["@TMSolution.Logging.EntityLogger"]]
+            

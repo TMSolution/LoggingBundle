@@ -1,0 +1,13 @@
+logging_default_show:
+    locales: { en: "/show/{id}", pl: "/pokaz/{id}" } 
+    defaults: { _controller: "TMSolutionOwcaBundle:DefaultController:show" }
+        
+logging_default_readchannelapp:
+    pattern:  /app/lista
+    defaults: { _controller: "TMSolutionLoggingBundle:Default:readChannelApp" }
+    
+logging_default_readchanneledi:
+    pattern:  /edi/lista
+    defaults: { _controller: "TMSolutionLoggingBundle:Default:readChannelEdi" }
+    
+    

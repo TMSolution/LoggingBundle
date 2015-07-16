@@ -1,0 +1,34 @@
+{% extends 'CoreBaseBundle:Layout1:index.html.twig' %}
+
+{% block content -%}
+    <table class="record_properties table table-hover table-striped">
+        <tbody>
+            <tr>
+                <th>ID</th>                
+                <td>{{ entity.id }}</td>
+            </tr>            
+            <tr>
+                <th>Date</th>                
+                <td>{{ entity.dateTime.format('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Level</th>                
+                <td>{{ entity.levelName }}</td>
+            </tr>
+            <tr>
+                <th>message</th>                
+                <td>{{ entity.message }}</td>
+            </tr>
+            <tr>
+                <th>Extended message</th>                
+                <td>{{ entity.extendedMessage }}</td>
+            </tr>            
+        </tbody>
+    </table>
+    {# <div class="button-row">
+         <a href="{{path(routeBack)}}" class="prevButton btn btn-default pull-left">
+             Powrót
+         </a>
+     </div>
+ #}
+{% endblock %}

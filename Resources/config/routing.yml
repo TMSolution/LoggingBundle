@@ -1,0 +1,7 @@
+owca_log:
+    resource: "@TMSolutionLoggingBundle/Resources/config/routing/log.yml"
+    prefix:    /{entityName}
+    requirements: {entityName: log|edilog}
+    type: be_simple_i18n
+    
+    
